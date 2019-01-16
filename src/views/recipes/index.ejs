@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <% include ../static/partials/head.ejs %>
+  </head>
+  <body>
+    <main class="container">
+      <% include ../static/partials/navbar.ejs %>
+
+      <h1>Recipes</h1>
+
+      <% if(currentUser) { %>
+      <a href="/recipes/new" class="btn btn-success">New Recipe</a>
+      <% } %>      
+
+      <ul class="list-group">
+<!-- #1 -->
+        <% recipes.forEach((recipe) => { %>
+<!-- #2 -->
+          <li class="list-group-item">
+            <a href="/recipes/<%= recipe.id %>"> <%= recipe.title %> </a>
+          </li>
+        <% }) %>
+      </ul>
+
+    </main>
+  </body>
+</html>
