@@ -1,5 +1,4 @@
 const recipeQueries = require('../db/queries.recipes.js');
-const Authorizer = require("../policies/recipe");
 
 module.exports = {
   index(req, res, next){
@@ -19,28 +18,12 @@ module.exports = {
   	res.render('recipes/new');
   },
 
-   new(req, res, next){
- // #2
-     const authorized = new Authorizer(req.user).new();
-
-     if(authorized) {
-       res.render("recipes/new");
-     } else {
-       req.flash("notice", "You are not authorized to do that.");
-       res.redirect("/recipes");
-     }
-   },  
-
    create(req, res, next){
 
- // #1
-     const authorized = new Authorizer(req.user).create();
-
- // #2
-     if(authorized) {
        let newRecipe = {
          title: req.body.title,
-         description: req.body.description
+         description: req.body.description,
+         userId: req.user.id
        };
        recipeQueries.addRecipe(newRecipe, (err, recipe) => {
          if(err){
@@ -49,12 +32,6 @@ module.exports = {
            res.redirect(303, `/recipes/${recipe.id}`);
          }
        });
-     } else {
-
- // #3
-       req.flash("notice", "You are not authorized to do that.");
-       res.redirect("/recipes");
-     }
    },
 
    show(req, res, next){
@@ -90,17 +67,8 @@ module.exports = {
        if(err || recipe == null){
          res.redirect(404, "/");
        } else {
+         res.render("recipes/edit", {recipe});
 
- // #2
-         const authorized = new Authorizer(req.user, recipe).edit();
-
- // #3
-         if(authorized){
-           res.render("recipes/edit", {recipe});
-         } else {
-           req.flash("You are not authorized to do that.")
-           res.redirect(`/recipes/${req.params.id}`)
-         }
        }
      });
    },   

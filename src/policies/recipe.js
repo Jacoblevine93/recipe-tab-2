@@ -1,7 +1,7 @@
  // #1
 const ApplicationPolicy = require("./application");
 
-module.exports = class TopicPolicy extends ApplicationPolicy {
+module.exports = class RecipePolicy extends ApplicationPolicy {
 
  // #2
   new() {

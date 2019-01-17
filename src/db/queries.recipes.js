@@ -1,5 +1,4 @@
 const Recipe = require('./models').Recipe;
-const Authorizer = require("../policies/recipe");
 
 module.exports = {
 
@@ -10,6 +9,7 @@ module.exports = {
 			callback(null, recipes);
 		})
 		.catch((err) => {
+      console.log(err);
 			callback(err);
 		})
 	},
@@ -27,12 +27,14 @@ module.exports = {
    addRecipe(newRecipe, callback){
       return Recipe.create({
         title: newRecipe.title,
-        description: newRecipe.description
+        description: newRecipe.description,
+        userId: newRecipe.userId
       })
       .then((recipe) => {
         callback(null, recipe);
       })
       .catch((err) => {
+        console.log(err);
         callback(err);
       })
     },
@@ -42,23 +44,11 @@ module.exports = {
 // #1
      return Recipe.findById(req.params.id)
      .then((recipe) => {
-
- // #2
-       const authorized = new Authorizer(req.user, recipe).destroy();
-
-       if(authorized) {
  // #3
          recipe.destroy()
          .then((res) => {
            callback(null, recipe);
          });
-         
-       } else {
-
- // #4
-         req.flash("notice", "You are not authorized to do that.")
-         callback(401);
-       }
      })
      .catch((err) => {
        callback(err);
@@ -76,12 +66,6 @@ module.exports = {
          return callback("Recipe not found");
        }
 
-// #3
-       const authorized = new Authorizer(req.user, recipe).update();
-
-       if(authorized) {
-
-// #4
          recipe.update(updatedRecipe, {
            fields: Object.keys(updatedRecipe)
          })
@@ -91,12 +75,6 @@ module.exports = {
          .catch((err) => {
            callback(err);
          });
-       } else {
-
-// #5
-         req.flash("notice", "You are not authorized to do that.");
-         callback("Forbidden");
-       }
      });
    }
 

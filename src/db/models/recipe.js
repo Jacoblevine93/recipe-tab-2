@@ -8,10 +8,17 @@ module.exports = (sequelize, DataTypes) => {
      description: {
        type: DataTypes.STRING,
        allowNull: false
-     }
+     },
+     userId: {
+       type: DataTypes.INTEGER,
+       allowNull: false
+     }          
   }, {});
   Recipe.associate = function(models) {
-    // associations can be defined here
+    Recipe.belongsTo(models.User, {
+       foreignKey: "userId",
+       onDelete: "CASCADE"
+   });
   };
   return Recipe;
 };
