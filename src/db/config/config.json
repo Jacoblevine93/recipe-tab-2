@@ -25,6 +25,6 @@
     "dialect": "postgres",
     "logging": false,
     "operatorAliases": false,
-    "use_env_variable": "process.env.megasecret"
+    "use_env_variable": "process.ENV.databaseSecret"
   }
 }
