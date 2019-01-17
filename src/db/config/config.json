@@ -25,6 +25,6 @@
     "dialect": "postgres",
     "logging": false,
     "operatorAliases": false,
-    "use_env_variable": "process.ENV.databaseSecret"
+    "use_env_variable": "postgres://hcxhhogvfjecti:8eb9fa0d26a266389a60d0d680f8230c475ab3b5ca95759c3f6da9d95b9fb8ed@ec2-54-225-121-235.compute-1.amazonaws.com:5432/d1hrqph3nil7bc"
   }
 }
